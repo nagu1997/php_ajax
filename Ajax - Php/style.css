@@ -1,0 +1,168 @@
+
+#table1{
+    border-collapse:collapse;
+    text-align:center;
+    padding:10px;
+    border:0;
+}
+#table1 th,tr,td{
+    border:0;
+}
+#table1 td{
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: bolder;
+}
+#a1,#a2{
+    width:65px;
+    height:40px;
+    padding:5px;
+}
+#editing,#deleting,#submitted{
+    background-color:#d39999;
+    color:initial;
+    text-align:center;
+    cursor:pointer;
+    border-radius: 5px;
+    font-style: italic;
+    font-family: 'Verdana',Tahoma,'Segoe UI',Geneva,  sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px;
+    letter-spacing:1.1px;
+}
+
+a{
+    border:0;
+    text-decoration: none;
+    width:100px;
+   
+}
+#editing:hover{
+    background-color: rgb(107, 44, 23);
+    color: white;
+}
+#deleting:hover{
+    background-color:rgb(107, 44, 23);
+    color: whitesmoke;
+}
+
+#table1 tr:nth-child(odd){
+    background-color: gainsboro;
+    
+}
+#table1 tr:nth-child(even){
+    background-color: rgba(168, 161, 161, 0.958);
+}
+#table1 th:nth-child(odd),#table1 th:nth-child(even){
+    background-color: rgba(3, 115, 123, 0.958);
+    color:white;
+    padding: 10px;  ;
+    font-size: 13px;
+}
+#table1 th:last-child{
+    background-color: rgb(107, 44, 23);
+    font-size: 14px;
+}
+
+#submitted{
+    background-color: gold;
+    color:darkblue;
+    border: 0;
+    margin-top:20px;
+}
+#submitted:hover{
+    background-color:darkblue ;
+    color:gold;
+}
+input[type="text"],input[type="date"],input[type="number"]{
+    border-radius: 10px;
+    height:20px;
+    width:200px;
+    padding: 10px;
+    letter-spacing: 1.5px;
+    font-size: 15px;
+    font-weight: bold;
+    font-style: italic;
+    color:darkblue;
+    background-color: rgb(229, 229, 237);
+    border:0;
+    margin-bottom: 10px;
+}
+input:focus{
+    outline: 3px solid darkblue;
+    border:0;
+}
+input[type="button"]{
+    outline:0;
+}
+
+#formt2 label{
+    color: darkblue;
+    opacity:0.5;
+    letter-spacing: 1.2px;;
+}
+#formt2 td #pollution_affection {
+    outline:0;
+    accent-color:gold;
+    opacity:1;
+    width: 20px;
+    height: 20px;
+}
+h2{
+    text-decoration:overline ;
+    letter-spacing: 3px;
+}
+h2:hover{
+    border-bottom:3px solid black;
+}
+#t1 h2{
+    width:210px;
+}
+#insertForm h2{
+    width:150px;
+}
+#combine{
+    display:flex;
+}
+#resultForm{
+    padding:30px;
+}
+#resultTable{
+    padding-top:20px;
+    padding-left:20px;
+    padding-right:20px;
+   
+}
+#t1{
+    overflow-y:scroll;
+    height:500px;
+}
+#insertForm{
+    margin-top:-10px;
+}
+
+hr{
+    accent-color:darkblue;
+    font-size:20px;
+    border:2px solid black;
+}
+
+#t1 th #acts{
+    border:2px solid white;
+    padding:6px;
+}
+
+::placeholder{
+    color:rgb(169, 169, 200);
+}
+
+.asterisk_input:after {
+    content: " *";
+    color: brown;
+    position: absolute;
+    margin: 0px 0px 0px -20px;
+    font-size: 17px;
+    padding: 0 5px 0 0;
+  }
+
