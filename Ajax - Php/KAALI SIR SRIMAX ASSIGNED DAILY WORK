@@ -1,0 +1,43 @@
+DAY 1 => 15/11/2023 [WEDNESDAY]
+						- Database creation
+						- database columns show in php file (database connect)
+DAY 2 => 16/11/2023 [THURSDAY]
+						- Insert operation and display datas on table and database.
+						- update and delete works connect table and form
+DAY 3 => 17/11/2023 [FRIDAY]
+						- These insert,update,delete All process on one single file Application & table also..
+DAY 4 => 18/11/2023 [SATURDAY]
+						- single file edit also same Form edit , singel file,single form All Process do work!...(Insert,Edit,Delete)
+DAY 5 => 22/11/2023 [WEDNESDAY]
+						- function use for every process change.
+						- ajax -> use page cannot reload
+DAY 6 => 23/11/2023 [THURSDAY]
+						(I No ask and tell)
+DAY 7 => 24/11/2023 [FRIDAY]
+						- only neccessary page only load,fumction call correctly....
+						- i have tottally 100 lines of my php code 50 lines of code only run => exit(); keyword use....
+DAY 8 => 25/11/2023 [SATURDAY]
+						- initially form and table show, After i inserting data my updated value adding on table => only one table only show.
+						- neccessary values only i get responsed from ajax (don't unwanted datas <!DOCTYPE html> also ) 
+DAY 9 => 27/11/2023 [M0NDAY]
+						-  I get response don't show every table columns. all are wrapped(table) in one div id ,that id only you receive response.
+DAY 10 => 28/11/2023 [TUESDAY]
+						- Form separate Function..
+						- Edit/Update 2 Ajax Functions don't need one enough.
+						- Editing Process for Ajax.
+DAY 11 => 29/11/2023 [WEDNESDAY]
+						- <input type="submit" ! don't use -> "button" use better its every time loading for submit use....
+						- <script type="text/javascript" mention....
+						- global $conn; use access all functions....
+						- href="javascript:void(0);"; -> no actions performing for link...
+DAY 12 => 30/11/2023 [THURSDAY]
+						- Error checking must! print_r($_GET)/POST ->Array check.... echo "" -> values checking.... finishing exit; use
+						- Query string parameters (GET METHOD), Form (POST METHOD)
+						- (===) don't use, (==) use Enough!
+DAY 13 => 01/12/2023 [FRIDAY]
+						(I No ask and tell)
+DAY 14 => 02/12/2023 [SATURDAY]
+						- Form and Table (HTML Contents) don't use echo statements in php. normal html format its enough. 
+						- which place need that place use <?php ?>
+DAY 15 => 04/12/2023 [MONDAY]
+						-
