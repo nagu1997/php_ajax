@@ -1,5 +1,4 @@
 <?php 
-//global $conn;
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -9,47 +8,27 @@ if ($conn->connect_error) {
     die('Connection failed: ' . $conn->connect_error);
 }
 
-/*
-$product_id = "";
-$product_name = "";
-$product_amount = "";
-$product_quantity = "";
-$expiry_date = "";
-$pollution_affection = "";*/
-
-//print_r($_GET);
-// exit;   
-//print_r($_POST);
-//var_dump($_POST);
-// echo 'hello edit';
-//print_r($_GET);
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     if($_POST["action"] == 'insert'){
-       /* $product_id = $_POST["product_id"];
-        $product_name = $_POST['product_name'];
-        $product_amount = $_POST['product_amount'];
-        $product_quantity = $_POST['product_quantity'];
-        $expiry_date = $_POST['expiry_date'];
-        $pollution_affection =  isset($_POST['pollution_affection']) ? 'yes' : 'no';*/
-        //echo "$product_id";
         if (empty($_POST["product_id"])) {
-
             insertProduct($conn);
         }
         else{
-
             updateProduct($conn);
         }
+
+        echo displayTable($conn);
+
     }else if($_POST["action"] == 'delete'){
 
         $product_id = $_POST["product_id"];
         deleteProduct($conn,$product_id);
+        echo displayTable($conn);
 
     }else if ($_POST["action"] == 'edit') {
         $product_id = $_POST["product_id"];
-        //editProduct($conn,$product_id);
+        
         $sql = "SELECT * FROM products WHERE product_id='$product_id'";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
@@ -60,17 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             $product_quantity = $row["product_quantity"];
             $expiry_date = $row["expiry_date"];
             $pollution_affection = $row['pollution_affection'];
+
             echo form($product_id,$product_name,$product_amount,$product_quantity,$expiry_date,$pollution_affection);
+            
         }
     }
-
-    echo displayTable($conn);
     exit;
 }
 
-//form();
-
- 
 ?>
 
 <!DOCTYPE html>
@@ -79,58 +55,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajax with PHP and MySQL</title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script type="text/javascript" src="jqueryscript.js"></script>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    
 </head>
 <body>
 
-
-
-<script type="text/javascript">
+<script>
     function inserted() {
-        //let formData = $('#insertForm').serialize();
-        //console.log(formData);
         let product_id=$("#product_id").val();
         let product_name=$("#product_name").val();
         let product_amount=$("#product_amount").val();
         let product_quantity=$("#product_quantity").val();
         let expiry_date=$("#expiry_date").val();
         let pollution_affection=$("input[name='pollution_affection']:checked").val();
-        
-        $.ajax({
-            url: 'index.php',
-            type: 'POST',
-            data: {action:"insert",product_id:product_id,product_name:product_name,product_amount:product_amount,product_quantity:product_quantity,expiry_date:expiry_date,pollution_affection:pollution_affection},
-            success: function(response) {
-                alert(response);
-                $('#t1').appendTo('#resultTable');
-                $('#resultTable').html(response);
-                $("#save").val("Add Product");
-                //$('#insertForm')[0].reset();
-               //$(':input','#insertForm').not(':button',':radio').val('').removeAttr('checked');
-               //$("input[name='pollution_affection']").prop('checked',false);
-                
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
+
+        if(product_name != "" && product_amount != "" && product_quantity != "" && expiry_date != "" && pollution_affection != ""){
+            $.ajax({
+                url: 'index.php',
+                type: 'POST',
+                data: {action:"insert",product_id:product_id,product_name:product_name,product_amount:product_amount,product_quantity:product_quantity,expiry_date:expiry_date,pollution_affection:pollution_affection},
+                success: function(response) {
+                        $('#resultTable').html(response);
+                        $("#submitted").val("Add Product");
+                        $(':input','#insertForm').not(':button').not(':checkbox').val('').removeAttr('checked');
+                        $("input[name='pollution_affection']").prop('checked',false);
+                    
+                    
+                    
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+        else{
+            
+            alert("Please Enter All Fields ! ! !");
+        }
         
     }
 
     function updated(product_id) {
         if (confirm('Are you sure you want to EDIT this product?')) {
-            console.log("EDIT (SCRIPT)id is->"+product_id);
             $.ajax({
                 url: 'index.php?action=edit&id='+product_id,
                 type: 'POST',
                 data: {action:"edit",product_id:product_id},
                 success: function(response) {
-                    alert(response);
-                    console.log('Editing product with ID: ' + product_id);
-                     $('#t1').appendTo('#resultTable');
-                    $('#resultTable').html(response);
-                    //$('#insertForm')[0].reset();
-                    $("#save").val("Update product");
+                    $('#resultForm').html(response);
+                    $("#submitted").val("Update product");
                 },
                 error: function(error) {
                     console.log(error);
@@ -141,18 +115,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
     function deleted(product_id) {
         if (confirm('Are you sure you want to DELETE this product?')) {
-            console.log("DELETE (SCRIPT)id is->"+product_id);
             $.ajax({
                 url: 'index.php?action=delete&id='+ product_id,
                 type: 'POST',
                 data: {action:"delete",product_id:product_id},
                 success: function(response) {
-                    alert(response);
-                    console.log('Deleting product with ID: ' + product_id);
-                    $('#t1').appendTo('#resultTable');
                     $('#resultTable').html(response);
                     $("#product_id").val("");
                     //$('#insertForm')[0].reset();
+                    $(':input','#insertForm').not(':button').not(':checkbox').val('').removeAttr('checked');
+                    $("input[name='pollution_affection']").prop('checked',false);
                 },
                 error: function(error) {
                     console.log(error);
@@ -160,22 +132,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             });
         }
     }
-  
+ 
+
 </script>
 
 
-<div id="resultTable">
-
-<!--
+<div id="combine">
+    <div id="resultForm"> 
+        <?php echo form($product_id="", $product_name ="", $product_amount ="", $product_quantity ="", $expiry_date ="", $pollution_affection = ""); ?>
+    </div>
+    <hr>
+    <div id="resultTable">
+        <?php echo displayTable($conn); ?>
+    </div>
 </div>
-
-<div id="resultForm"> -->
-<?php echo form($product_id="", $product_name ="", $product_amount ="", $product_quantity ="", $expiry_date ="", $pollution_affection = ""); ?>
-<?php echo displayTable($conn); ?>
-</div>
-
-
-
 
 </body>
 </html>
@@ -200,8 +170,7 @@ function insertProduct($conn){
 
     $insertsql = "INSERT INTO products (product_name, product_amount, product_quantity, expiry_date, pollution_affection) VALUES ('$product_name', '$product_amount', '$product_quantity', '$expiry_date', '$pollution_affection')";
     mysqli_query($conn,$insertsql);
-    //$product_id = $product_name = $product_amount = $product_quantity = $expiry_date = $pollution_affection = "";
-    echo form($product_id="", $product_name ="", $product_amount ="", $product_quantity ="", $expiry_date ="", $pollution_affection = "");
+
 }
 function updateProduct($conn){
     //global $conn;
@@ -214,72 +183,69 @@ function updateProduct($conn){
 
     $updatesql = "UPDATE products SET product_name='$product_name', product_amount='$product_amount', product_quantity='$product_quantity', expiry_date='$expiry_date', pollution_affection='$pollution_affection' WHERE product_id='$product_id'";
     mysqli_query($conn,$updatesql);
-   // $product_id = $product_name = $product_amount = $product_quantity = $expiry_date = $pollution_affection = "";
-    echo form($product_id="", $product_name ="", $product_amount ="", $product_quantity ="", $expiry_date ="", $pollution_affection = "");
+    
 }
 
 function deleteProduct($conn,$product_id){
     $sql = "DELETE FROM products WHERE product_id='$product_id'";
     mysqli_query($conn,$sql);
 
-    //$product_id = $product_name = $product_amount = $product_quantity = $expiry_date = $pollution_affection = "";
-    echo form($product_id="", $product_name ="", $product_amount ="", $product_quantity ="", $expiry_date ="", $pollution_affection = "");
 }
 
 function form($product_id,$product_name,$product_amount,$product_quantity,$expiry_date,$pollution_affection){
-    //global $product_id,$product_name,$product_amount,$product_quantity,$expiry_date,$pollution_affection; ?>
+ ?>
     
-    <form id = "insertForm" method = "post" style="margin-top:-150px;">
-        <table>
+    <form id = "insertForm" method = "post">
+        <table id="formt2">
             <tr colspan="8"><td><h2>Insert Data</h2></td></tr>
             <tr><td><input type = "hidden" id = "product_id" name = "product_id" value="<?php echo $product_id; ?>"></td>
             </tr>
 
             <tr>
             <td><label for = "product_name">Product Name:</label></td>
-            <td><input type = "text" id = "product_name" name = "product_name" required value="<?php echo $product_name; ?>"></td><br>
+            <td><input type = "text" id = "product_name" name = "product_name" placeholder="NAME" value="<?php echo $product_name; ?>" required><span class="asterisk_input"></span></td>
             </tr>
 
             <tr>
             <td><label for = "product_amount">Product Amount:</label></td>
-            <td><input type = "number" id = "product_amount" name = "product_amount" required value="<?php echo $product_amount; ?>"></td><br>
+            <td><input type = "number" id = "product_amount" name = "product_amount" placeholder="RUPEES" value="<?php echo $product_amount; ?>" required><span class="asterisk_input"></span></td>
             </tr>
 
             <tr>
             <td><label for = "product_quantity">Product Quantity:</label></td>
-            <td><input type = "number" id = "product_quantity" name = "product_quantity" required value="<?php echo $product_quantity; ?>"></td><br>
+            <td><input type = "number" id = "product_quantity" name = "product_quantity" placeholder="QTY" value="<?php echo $product_quantity; ?>" required><span class="asterisk_input"></span></td>
             </tr>
 
             <tr>
             <td><label for = "expiry_date">Expiry Date:</label></td>
-            <td><input type = "date" id = "expiry_date" name = "expiry_date" required value="<?php echo $expiry_date; ?>"></td><br>
+            <td><input type = "date" id = "expiry_date" name = "expiry_date"  value="<?php echo $expiry_date; ?>" required><span class="asterisk_input"></span></td>
             </tr>
 
             <tr>
             <td><label for = "PollutionAffection">Pollution Affection:</label></td>
-            <td><label><input type = "checkbox" id = "pollution_affection" name = "pollution_affection"   <?php echo ($pollution_affection == 'yes' ? 'checked' : ''); ?>> Yes (Means Tick)</label></td><br>
+            <td><input type = "checkbox" id = "pollution_affection" name = "pollution_affection"   <?php echo ($pollution_affection == 'yes' ? 'checked' : ''); ?>> <label>Yes (Means Tick)</label></td>
             </tr>
-            <br>
             <tr>
-            <td><input type = "button" name = "submit_form" id="save" onclick = "inserted()"  value = "Add Product"></td><br>
+            <td><input type = "button" name = "submit_form" id="submitted" onclick = "inserted()"  value = "Add Product"></td>
             </tr>
         </table>
     </form>
+    
 
 <?php
               
  }
 
 function displayTable($conn) {
-   // global $conn;
+
     $displaysql = "SELECT * FROM products";
     $result = $conn->query($displaysql);
     
 ?>
 
     <div id="t1">
-        <h2>Product Details</h2>
-        <table border="2px" id="table1" cellpadding="3px" style="border-collapse:collapse;text-align:center;">
+        <h2>Product Details  </h2>
+        <table border="1px" id="table1">
         <thead>
         <tr>
             <th><i>Product ID</i></th>
@@ -288,7 +254,7 @@ function displayTable($conn) {
             <th><i>Product Quantity</i></th>
             <th><i>Expiry Date</i></th>
             <th><i>Pollution Affection</i></th>
-            <th><i>Actions</i></th>
+            <th colspan="2"><i id="acts">Actions</i></th>
         </tr> 
         </thead>
         <tbody>
@@ -304,10 +270,8 @@ function displayTable($conn) {
                 <td> <?php echo $row["product_quantity"] ?> </td>
                 <td> <?php echo date("d/m/Y", strtotime($row["expiry_date"])) ?> </td>
                 <td> <?php echo $row["pollution_affection"] ?> </td>
-                <td>
-                    <button><a href="javascript:void(0);" id="editing" onclick="updated(<?php echo  $row['product_id'] ?> )" style="text-decoration:none; color:black;">Edit</a></button> <br>
-                    <button><a href="javascript:void(0);" id="deleting" onclick="deleted(<?php echo  $row['product_id']  ?> )" style="text-decoration:none; color:black;">Delete</a></button>
-                </td>
+                <td id="a1"><a href="javascript:void(0);" id="editing" onclick="updated(<?php echo  $row['product_id'] ?> )" >Edit</a></td>
+                <td id="a2"><a href="javascript:void(0);" id="deleting" onclick="deleted(<?php echo  $row['product_id']  ?> )" >Delete</a></td>
                 </tr>
 
             <?php
